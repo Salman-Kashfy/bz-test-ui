@@ -1,4 +1,4 @@
-import DashboardOutlinedIcon from '@mui/icons-material/DashboardOutlined'
+import CellTowerIcon from '@mui/icons-material/CellTower';
 import HistoryOutlinedIcon from '@mui/icons-material/HistoryOutlined'
 import {
   AppBar,
@@ -22,7 +22,7 @@ function Header() {
             Workspace
           </Typography>
           <Tabs value={activePath} aria-label="Main navigation">
-            <Tab value="/" label="Home" icon={<DashboardOutlinedIcon fontSize="small" />} iconPosition="start" component={RouterLink} to="/" />
+            <Tab value="/" label="Live" icon={<CellTowerIcon fontSize="small" />} iconPosition="start" component={RouterLink} to="/" />
             <Tab value="/history" label="History" icon={<HistoryOutlinedIcon fontSize="small" />} iconPosition="start" component={RouterLink} to="/history" />
           </Tabs>
         </Toolbar>

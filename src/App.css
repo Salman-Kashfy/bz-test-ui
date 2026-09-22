@@ -73,6 +73,17 @@
   white-space: nowrap;
 }
 
+.home-table td:first-child {
+  max-width: 260px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.stream-alert {
+  margin: 16px;
+}
+
 .empty-cell {
   color: #596776;
   text-align: center;
