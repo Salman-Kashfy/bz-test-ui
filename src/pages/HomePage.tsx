@@ -70,7 +70,6 @@ function HomePage() {
           <Box component="table" className="data-table home-table">
             <thead>
               <tr>
-                <th scope="col">ID</th>
                 <th scope="col">Status code</th>
                 <th scope="col">Title</th>
                 <th scope="col">Author</th>
@@ -81,7 +80,6 @@ function HomePage() {
             </thead>
             <tbody>
               <tr>
-                <td>{ping.id}</td>
                 <td><Chip label={ping.statusCode} size="small" color="success" variant="outlined" /></td>
                 <td>{ping.payload.title}</td>
                 <td>{ping.payload.author}</td>
