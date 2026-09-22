@@ -83,7 +83,7 @@ function HistoryPage() {
                 <th scope="col">Status</th>
                 <th scope="col">Title</th>
                 <th scope="col">Author</th>
-                <th scope="col">Response (ms)</th>
+                <th scope="col">Response time</th>
                 <th scope="col">Z-score</th>
                 <th scope="col">Anomaly</th>
               </tr>
@@ -94,7 +94,7 @@ function HistoryPage() {
                   <td><Chip label={record.statusCode} size="small" color="success" variant="outlined" /></td>
                   <td>{record.payload.title}</td>
                   <td>{record.payload.author}</td>
-                  <td>{record.responseTime}</td>
+                  <td>{record.responseTime} ms</td>
                   <td>{record.zScore ?? '-'}</td>
                   <td>{record.isAnomaly === null ? '-' : record.isAnomaly ? 'Yes' : 'No'}</td>
                 </tr>
