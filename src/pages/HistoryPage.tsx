@@ -35,6 +35,7 @@ function HistoryPage() {
   const [pagination, setPagination] = useState<PingListResponse['data']['pagination'] | null>(null)
   const [error, setError] = useState('')
   const [isLoading, setIsLoading] = useState(true)
+  const latestRecord = currentPage === 1 ? records[0] : null
 
   useEffect(() => {
     const controller = new AbortController()
@@ -78,6 +79,11 @@ function HistoryPage() {
       {error && <Alert severity="error">{error}</Alert>}
       {!isLoading && !error && (
         <>
+          {latestRecord?.isAnomaly && (
+            <Alert severity="error" className="stream-alert">
+              Anomaly detected in the latest history record.
+            </Alert>
+          )}
           <Box component="table" className="data-table history-table">
             <thead>
               <tr>

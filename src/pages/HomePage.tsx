@@ -63,6 +63,11 @@ function HomePage() {
       )}
       {ping && (
         <>
+          {ping.isAnomaly && (
+            <Alert severity="error" className="stream-alert">
+              Anomaly detected in the latest live ping.
+            </Alert>
+          )}
           {hasConnectionError && (
             <Alert severity="warning" className="stream-alert">
               Connection interrupted. Waiting to reconnect.
