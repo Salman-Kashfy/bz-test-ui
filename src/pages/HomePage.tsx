@@ -6,6 +6,7 @@ type PingRecord = {
   id: string
   statusCode: number
   responseTime: number
+  fResponseTime: number
   zScore: number | null
   isAnomaly: boolean | null
   payload: {
@@ -74,6 +75,7 @@ function HomePage() {
                 <th scope="col">Title</th>
                 <th scope="col">Author</th>
                 <th scope="col">Response time</th>
+                <th scope="col">Forecast</th>
                 <th scope="col">Z-score</th>
                 <th scope="col">Anomaly</th>
               </tr>
@@ -84,6 +86,7 @@ function HomePage() {
                 <td>{ping.payload.title}</td>
                 <td>{ping.payload.author}</td>
                 <td>{ping.responseTime} ms</td>
+                <td>{ping.fResponseTime} ms</td>
                 <td>{ping.zScore ?? '-'}</td>
                 <td>{ping.isAnomaly === null ? '-' : ping.isAnomaly ? 'Yes' : 'No'}</td>
               </tr>
