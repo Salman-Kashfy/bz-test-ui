@@ -90,9 +90,9 @@ function HomePage() {
                 <td><Chip label={ping.statusCode} size="small" color="success" variant="outlined" /></td>
                 <td>{ping.payload.title}</td>
                 <td>{ping.payload.author}</td>
-                <td>{ping.responseTime} ms</td>
-                <td>{ping.fResponseTime} ms</td>
-                <td>{ping.zScore ?? '-'}</td>
+                <td>{Number(ping.responseTime).toFixed(2)} ms</td>
+                <td>{Number(ping.fResponseTime).toFixed(2)} ms</td>
+                <td>{ping.zScore === null ? '-' : Number(ping.zScore).toFixed(2)}</td>
                 <td>{ping.isAnomaly === null ? '-' : ping.isAnomaly ? 'Yes' : 'No'}</td>
               </tr>
             </tbody>

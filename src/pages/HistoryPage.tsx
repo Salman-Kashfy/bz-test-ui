@@ -102,9 +102,9 @@ function HistoryPage() {
                   <td><Chip label={record.statusCode} size="small" color="success" variant="outlined" /></td>
                   <td>{record.payload.title}</td>
                   <td>{record.payload.author}</td>
-                  <td>{record.responseTime} ms</td>
-                  <td>{record.fResponseTime} ms</td>
-                  <td>{record.zScore ?? '-'}</td>
+                  <td>{Number(record.responseTime).toFixed(2)} ms</td>
+                  <td>{Number(record.fResponseTime).toFixed(2)} ms</td>
+                  <td>{record.zScore === null ? '-' : Number(record.zScore).toFixed(2)}</td>
                   <td>{record.isAnomaly === null ? '-' : record.isAnomaly ? 'Yes' : 'No'}</td>
                 </tr>
               ))}
