@@ -1,20 +1,8 @@
 import { useEffect, useState } from 'react'
-import { Alert, Box, Chip, CircularProgress, Pagination, Typography } from '@mui/material'
+import { Alert, Box, Chip, CircularProgress, Pagination, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography, useMediaQuery, useTheme } from '@mui/material'
 import axios from 'axios'
+import PingRecordCard, { type PingRecord } from '../components/PingRecordCard'
 import PageLayout from '../layouts/PageLayout'
-
-type PingRecord = {
-  id: string
-  statusCode: number
-  responseTime: number
-  fResponseTime: number
-  zScore: number | null
-  isAnomaly: boolean | null
-  payload: {
-    title: string
-    author: string
-  }
-}
 
 type PingListResponse = {
   status: boolean
@@ -30,6 +18,8 @@ type PingListResponse = {
 }
 
 function HistoryPage() {
+  const theme = useTheme()
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'))
   const [records, setRecords] = useState<PingRecord[]>([])
   const [currentPage, setCurrentPage] = useState(1)
   const [pagination, setPagination] = useState<PingListResponse['data']['pagination'] | null>(null)
@@ -84,37 +74,46 @@ function HistoryPage() {
               Anomaly detected in the latest history record.
             </Alert>
           )}
-          <Box component="table" className="data-table history-table">
-            <thead>
-              <tr>
-                <th scope="col">Status</th>
-                <th scope="col">Title</th>
-                <th scope="col">Author</th>
-                <th scope="col">Response time</th>
-                <th scope="col">Forecast</th>
-                <th scope="col">Z-score</th>
-                <th scope="col">Anomaly</th>
-              </tr>
-            </thead>
-            <tbody>
-              {records.map((record) => (
-                <tr key={record.id}>
-                  <td><Chip label={record.statusCode} size="small" color="success" variant="outlined" /></td>
-                  <td>{record.payload.title}</td>
-                  <td>{record.payload.author}</td>
-                  <td>{Number(record.responseTime).toFixed(2)} ms</td>
-                  <td>{Number(record.fResponseTime).toFixed(2)} ms</td>
-                  <td>{record.zScore === null ? '-' : Number(record.zScore).toFixed(2)}</td>
-                  <td>{record.isAnomaly === null ? '-' : record.isAnomaly ? 'Yes' : 'No'}</td>
-                </tr>
-              ))}
-              {records.length === 0 && (
-                <tr>
-                  <td colSpan={7} className="empty-cell">No history records found.</td>
-                </tr>
-              )}
-            </tbody>
-          </Box>
+          {isMobile ? (
+            <Stack spacing={2} sx={{ p: 2 }}>
+              {records.map((record) => <PingRecordCard key={record.id} record={record} />)}
+              {records.length === 0 && <Box className="empty-cell">No history records found.</Box>}
+            </Stack>
+          ) : (
+            <TableContainer>
+              <Table aria-label="Ping history">
+                <TableHead>
+                  <TableRow>
+                    <TableCell>Status</TableCell>
+                    <TableCell>Title</TableCell>
+                    <TableCell>Author</TableCell>
+                    <TableCell>Response time</TableCell>
+                    <TableCell>Forecast</TableCell>
+                    <TableCell>Z-score</TableCell>
+                    <TableCell>Anomaly</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {records.map((record) => (
+                    <TableRow hover key={record.id}>
+                      <TableCell><Chip label={record.statusCode} size="small" color="success" variant="outlined" /></TableCell>
+                      <TableCell>{record.payload.title}</TableCell>
+                      <TableCell>{record.payload.author}</TableCell>
+                      <TableCell>{Number(record.responseTime).toFixed(2)} ms</TableCell>
+                      <TableCell>{Number(record.fResponseTime).toFixed(2)} ms</TableCell>
+                      <TableCell>{record.zScore === null ? '-' : Number(record.zScore).toFixed(2)}</TableCell>
+                      <TableCell>{record.isAnomaly === null ? '-' : record.isAnomaly ? 'Yes' : 'No'}</TableCell>
+                    </TableRow>
+                  ))}
+                  {records.length === 0 && (
+                    <TableRow>
+                      <TableCell colSpan={7} align="center">No history records found.</TableCell>
+                    </TableRow>
+                  )}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          )}
           {pagination && pagination.totalPages > 1 && (
             <Box className="pagination-bar">
               <Typography variant="body2" color="text.secondary">

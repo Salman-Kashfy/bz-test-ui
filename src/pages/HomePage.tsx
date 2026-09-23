@@ -1,21 +1,11 @@
 import { useEffect, useState } from 'react'
-import { Alert, Box, Chip, CircularProgress } from '@mui/material'
+import { Alert, Box, Chip, CircularProgress, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, useMediaQuery, useTheme } from '@mui/material'
+import PingRecordCard, { type PingRecord } from '../components/PingRecordCard'
 import PageLayout from '../layouts/PageLayout'
 
-type PingRecord = {
-  id: string
-  statusCode: number
-  responseTime: number
-  fResponseTime: number
-  zScore: number | null
-  isAnomaly: boolean | null
-  payload: {
-    title: string
-    author: string
-  }
-}
-
 function HomePage() {
+  const theme = useTheme()
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'))
   const [ping, setPing] = useState<PingRecord | null>(null)
   const [hasConnectionError, setHasConnectionError] = useState(false)
 
@@ -73,30 +63,38 @@ function HomePage() {
               Connection interrupted. Waiting to reconnect.
             </Alert>
           )}
-          <Box component="table" className="data-table home-table">
-            <thead>
-              <tr>
-                <th scope="col">Status code</th>
-                <th scope="col">Title</th>
-                <th scope="col">Author</th>
-                <th scope="col">Response time</th>
-                <th scope="col">Forecast</th>
-                <th scope="col">Z-score</th>
-                <th scope="col">Anomaly</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td><Chip label={ping.statusCode} size="small" color="success" variant="outlined" /></td>
-                <td>{ping.payload.title}</td>
-                <td>{ping.payload.author}</td>
-                <td>{Number(ping.responseTime).toFixed(2)} ms</td>
-                <td>{Number(ping.fResponseTime).toFixed(2)} ms</td>
-                <td>{ping.zScore === null ? '-' : Number(ping.zScore).toFixed(2)}</td>
-                <td>{ping.isAnomaly === null ? '-' : ping.isAnomaly ? 'Yes' : 'No'}</td>
-              </tr>
-            </tbody>
-          </Box>
+          {isMobile ? (
+            <Stack spacing={2} sx={{ p: 2 }}>
+              <PingRecordCard record={ping} />
+            </Stack>
+          ) : (
+            <TableContainer>
+              <Table aria-label="Latest ping">
+                <TableHead>
+                  <TableRow>
+                    <TableCell>Status code</TableCell>
+                    <TableCell>Title</TableCell>
+                    <TableCell>Author</TableCell>
+                    <TableCell>Response time</TableCell>
+                    <TableCell>Forecast</TableCell>
+                    <TableCell>Z-score</TableCell>
+                    <TableCell>Anomaly</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  <TableRow hover>
+                    <TableCell><Chip label={ping.statusCode} size="small" color="success" variant="outlined" /></TableCell>
+                    <TableCell>{ping.payload.title}</TableCell>
+                    <TableCell>{ping.payload.author}</TableCell>
+                    <TableCell>{Number(ping.responseTime).toFixed(2)} ms</TableCell>
+                    <TableCell>{Number(ping.fResponseTime).toFixed(2)} ms</TableCell>
+                    <TableCell>{ping.zScore === null ? '-' : Number(ping.zScore).toFixed(2)}</TableCell>
+                    <TableCell>{ping.isAnomaly === null ? '-' : ping.isAnomaly ? 'Yes' : 'No'}</TableCell>
+                  </TableRow>
+                </TableBody>
+              </Table>
+            </TableContainer>
+          )}
         </>
       )}
     </PageLayout>
